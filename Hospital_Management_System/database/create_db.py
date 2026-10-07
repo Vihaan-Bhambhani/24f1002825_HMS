@@ -1,4 +1,4 @@
-from datetime import datetime, date, time, timedelta
+import os\nfrom datetime import datetime, date, time, timedelta
 
 from werkzeug.security import generate_password_hash
 
@@ -6,11 +6,11 @@ from app import create_app
 from models.models import db, Admin, Department, Doctor, Patient, DoctorAvailability
 
 
-ADMIN_EMAIL = "admin@hms.local"
-ADMIN_PASSWORD = "Admin@123"
+ADMIN_EMAIL = os.environ.get("ADMIN_USER", "admin@example.com")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASS") or "local-development-only-change-me"
 
-DOCTOR_DEFAULT_PASSWORD = "Doctor@123"
-PATIENT_DEFAULT_PASSWORD = "Patient@123"
+DOCTOR_DEFAULT_PASSWORD = os.environ.get("DOCTOR_DEFAULT_PASSWORD") or "local-development-only-change-me"
+PATIENT_DEFAULT_PASSWORD = os.environ.get("PATIENT_DEFAULT_PASSWORD") or "local-development-only-change-me"
 
 
 def seed_minimal_data(app):
