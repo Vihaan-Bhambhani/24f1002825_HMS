@@ -1,4 +1,5 @@
-import os\nfrom datetime import datetime, date, time, timedelta
+import os
+from datetime import datetime, date, time, timedelta
 
 from werkzeug.security import generate_password_hash
 
