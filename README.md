@@ -34,6 +34,12 @@ Department
                      Treatment
 ```
 
+## Entity-Relationship Diagram
+
+The diagram below reflects the current SQLAlchemy model definitions. The editable DBML source is available at [`docs/er-diagram.dbml`](docs/er-diagram.dbml).
+
+![Hospital Management System Entity-Relationship Diagram](docs/images/er-diagram.svg)
+
 ## Database design
 
 The application uses seven main entities:
