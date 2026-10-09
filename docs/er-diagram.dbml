@@ -1,0 +1,88 @@
+// Hospital Management System — DBML based on the current SQLAlchemy models.
+// Paste into https://dbdiagram.io to render/export the ER diagram.
+
+Table admins {
+  id integer [pk, increment]
+  name varchar(120) [not null]
+  email varchar(120) [not null, unique]
+  password_hash varchar(256) [not null]
+  created_at datetime
+}
+
+Table departments {
+  id integer [pk, increment]
+  name varchar(120) [not null, unique]
+  description text [default: '']
+}
+
+Table doctors {
+  id integer [pk, increment]
+  name varchar(120) [not null]
+  email varchar(120) [not null, unique]
+  department_id integer [not null]
+  years_experience integer [default: 0]
+  bio text [default: '']
+  is_blacklisted boolean [default: false]
+  password_hash varchar(256) [not null]
+}
+
+Table patients {
+  id integer [pk, increment]
+  name varchar(120) [not null]
+  email varchar(120) [not null, unique]
+  password_hash varchar(256) [not null]
+  gender varchar(20)
+  address varchar(255)
+  is_blacklisted boolean [default: false]
+  created_at datetime
+  medical_history text
+  allergies varchar(255)
+  current_medications varchar(255)
+}
+
+Table doctor_availability {
+  id integer [pk, increment]
+  doctor_id integer [not null]
+  date date [not null]
+  start_time time [not null]
+  end_time time [not null]
+
+  indexes {
+    (doctor_id, date, start_time, end_time) [unique, name: 'uq_doctor_slot']
+  }
+}
+
+Table appointments {
+  id integer [pk, increment]
+  patient_id integer [not null]
+  doctor_id integer [not null]
+  date date [not null]
+  start_time time [not null]
+  end_time time [not null]
+  status varchar(20) [default: 'Booked', note: 'Booked, Completed, Cancelled']
+  created_at datetime
+
+  indexes {
+    (doctor_id, date, start_time, end_time) [unique, name: 'uq_doctor_apt_slot']
+  }
+}
+
+Table treatments {
+  id integer [pk, increment]
+  appointment_id integer [not null, unique]
+  visit_type varchar(50) [default: 'In-person']
+  tests_done varchar(200)
+  diagnosis text
+  prescription text
+  notes text
+  created_at datetime
+}
+
+Ref: doctors.department_id > departments.id
+Ref: doctor_availability.doctor_id > doctors.id
+Ref: appointments.patient_id > patients.id
+Ref: appointments.doctor_id > doctors.id
+Ref: treatments.appointment_id - appointments.id
+
+// Admins are separate accounts in the current schema and are not linked
+// to departments, doctors, or patients.
